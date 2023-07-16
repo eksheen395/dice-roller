@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 // include the Node.js 'path' module at the top of your file
 const path = require('path')
 
@@ -14,6 +14,18 @@ const createWindow = () => {
 
   win.loadFile('index.html')
 }
+
+
+//Dice Rolling Handlers
+async function handleRollDice () {
+  const diceoll = Math.floor(Math.random() * 21);
+	return diceoll
+}
+ipcMain.handle('roll-dice',handleRollDice);
+
+
+
+
 app.whenReady().then(() => {
   createWindow()
 })
@@ -21,4 +33,3 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
-

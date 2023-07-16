@@ -16,17 +16,18 @@ const createWindow = () => {
 }
 
 
-//Dice Rolling Handlers
-async function handleRollDice () {
-  const diceoll = Math.floor(Math.random() * 21);
-	return diceoll
+//Dice Rolling Handler
+function handleRollDice(event, d) {
+  const diceRoll = Math.floor(Math.random() * d+1);
+	return diceRoll
 }
-ipcMain.handle('roll-dice',handleRollDice);
-
-
 
 
 app.whenReady().then(() => {
+    ipcMain.handle('roll-dice', async (event, d) => {
+    const result = await handleRollDice(event, d)
+    return result
+  })
   createWindow()
 })
 

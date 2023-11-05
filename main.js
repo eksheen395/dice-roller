@@ -5,8 +5,8 @@ const path = require('path')
 // modify your existing createWindow() function
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 500,
+    height: 650,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
@@ -17,17 +17,31 @@ const createWindow = () => {
 
 
 //Dice Rolling Handler
-function handleRollDice(event, d) {
-  const diceRoll = Math.floor(Math.random() * d+1);
-	return diceRoll
+function handleRollDice(d) {
+    return Math.floor(Math.random() * d + 1)
+}
+
+function incrementModifier(m) {
+    return parseInt(m)+1
+}
+
+function decrementModifier(m) {
+    return parseInt(m)-1
 }
 
 
 app.whenReady().then(() => {
     ipcMain.handle('roll-dice', async (event, d) => {
-    const result = await handleRollDice(event, d)
-    return result
+        return handleRollDice(d);
   })
+
+ipcMain.handle('increment-die', async (event, m) => {
+    return incrementModifier(m);
+})
+
+ipcMain.handle('decrement-die', async (event, m) => {
+    return decrementModifier(m);
+})
   createWindow()
 })
 
